@@ -1,0 +1,121 @@
+package com.example.sunnyweather.activity;
+
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.os.Bundle;
+import android.view.View;
+import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.sunnyweather.R;
+import com.example.sunnyweather.db.SunnyWeatherDB;
+import com.example.sunnyweather.model.City;
+import com.example.sunnyweather.util.HttpCallbackListener;
+import com.example.sunnyweather.util.HttpUtil;
+import com.example.sunnyweather.util.Utility;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Created by admin on 2016/9/1.
+ */
+public class ChooseAreaActivity extends Activity {
+    private ProgressDialog progressDialog;
+    private TextView titleText;
+    private ListView listView;
+    private ArrayAdapter<String> adapter;
+    private SunnyWeatherDB sunnyWeatherDB;
+    private List<String> dataList = new ArrayList<String>();
+    /**
+     * City列表
+     */
+    private List<City> cityList;
+    /**
+     * 选中的城市
+     */
+    private City selectedCity;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setContentView(R.layout.choose_area);
+        listView = (ListView) findViewById(R.id.list_view);
+        titleText = (TextView) findViewById(R.id.title_text);
+        adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,dataList);
+        listView.setAdapter(adapter);
+        sunnyWeatherDB = SunnyWeatherDB.getInstance(this);
+        queryCities();//加载城市数据
+    }
+    private void queryCities(){
+        cityList = sunnyWeatherDB.loadCites();
+        if (cityList.size() > 0){
+            dataList.clear();
+            for (City city : cityList){
+                dataList.add(city.getCityName());
+            }
+            adapter.notifyDataSetChanged();//动态刷新列表
+            listView.setSelection(0);
+            titleText.setText("全国城市列表");
+        }else {
+            queryFromServer();
+        }
+    }
+    /**
+     * 从服务器上查询城市数据
+     */
+    private void queryFromServer(){
+        String address = "https://api.heweather.com/x3/citylist?search=allchina&key=2abd648d01c74b73bee1c8e7d6d6be7a";
+        showProgressDialog();
+        HttpUtil.sendHttpRequest(address, new HttpCallbackListener() {
+            @Override
+            public void onFinish(String response) {
+                boolean result = false;
+                result = Utility.handleCityResponse(sunnyWeatherDB,response);
+                if(result){
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            closeProgressDialog();
+                            queryCities();
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onError(Exception e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        closeProgressDialog();
+                        Toast.makeText(ChooseAreaActivity.this,"加载失败",Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+    }
+    /**
+     * 显示进度对话框
+     */
+    private void showProgressDialog(){
+        if (progressDialog == null){
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setMessage("正在加载...");
+            progressDialog.setCanceledOnTouchOutside(false);
+        }
+    }
+    /**
+     * 关闭进度对话框
+     */
+    private void closeProgressDialog(){
+        if (progressDialog != null){
+            progressDialog.dismiss();
+        }
+    }
+}

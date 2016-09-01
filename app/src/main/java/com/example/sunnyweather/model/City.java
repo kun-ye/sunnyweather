@@ -7,7 +7,33 @@ public class City {
     private int id;
     private String cityName;
     private String cityCode;
-    private int provinceId;
+    private String lat;
+    private String lon;
+    private String province;
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLon() {
+        return lon;
+    }
+
+    public void setLon(String lon) {
+        this.lon = lon;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
 
     public int getId() {
         return id;
@@ -33,11 +59,5 @@ public class City {
         this.cityCode = cityCode;
     }
 
-    public int getProvinceId() {
-        return provinceId;
-    }
 
-    public void setProvinceId(int provinceId) {
-        this.provinceId = provinceId;
-    }
 }

@@ -55,7 +55,7 @@ public class SunnyWeatherDB {
         }
     }
     /**
-     * 从数据库读取某省的所有城市信息
+     * 从数据库读取所有城市信息
      */
     public List<City> loadCites(){
         List<City> list = new ArrayList<City>();

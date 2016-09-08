@@ -37,6 +37,10 @@ public class ChooseAreaActivity extends Activity {
     private SunnyWeatherDB sunnyWeatherDB;
     private List<String> dataList = new ArrayList<String>();
     /**
+     * 判断是否WeatherActivity中跳转
+     */
+    private boolean isFromWeatherActivity;
+    /**
      * City列表
      */
     private List<City> cityList;
@@ -48,8 +52,9 @@ public class ChooseAreaActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        isFromWeatherActivity = getIntent().getBooleanExtra("from_weather_activity",false);
         SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(this);
-        if (preference.getBoolean("city_selected",false)){
+        if (preference.getBoolean("city_selected",false)&& !isFromWeatherActivity){
             Intent intent = new Intent(this,WeatherActivity.class);
             startActivity(intent);
             finish();
@@ -139,5 +144,15 @@ public class ChooseAreaActivity extends Activity {
         if (progressDialog != null){
             progressDialog.dismiss();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (isFromWeatherActivity){
+            Intent intent = new Intent(this,WeatherActivity.class);
+            startActivity(intent);
+        }
+        finish();
     }
 }

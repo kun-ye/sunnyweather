@@ -129,6 +129,8 @@ public class WeatherActivity extends Activity implements View.OnClickListener {
             weatherInfoLayout.setVisibility(View.INVISIBLE);
             cityNameText.setVisibility(View.INVISIBLE);
             queryCityWeaher(cityId);
+        }else{
+            showWeather();
         }
     }
     /**
@@ -156,7 +158,7 @@ public class WeatherActivity extends Activity implements View.OnClickListener {
 
             @Override
             public void onError(Exception e) {
-
+                publishText.setText("同步失败...");
             }
         });
     }
@@ -202,6 +204,10 @@ public class WeatherActivity extends Activity implements View.OnClickListener {
                         break;
                     case "雷阵雨":
                         weather_pic1.setImageResource(R.drawable.tstorm_night);
+                        break;
+                    case "小雨":
+                        weather_pic1.setImageResource(R.drawable.light_rain);
+                        break;
                 }
                 switch (desp_n2){
                     case "晴":
@@ -215,6 +221,10 @@ public class WeatherActivity extends Activity implements View.OnClickListener {
                         break;
                     case "雷阵雨":
                         weather_pic2.setImageResource(R.drawable.tstorm_night);
+                        break;
+                    case "小雨":
+                        weather_pic2.setImageResource(R.drawable.light_rain);
+                        break;
                 }
                 switch (desp_n3){
                     case "晴":
@@ -228,6 +238,10 @@ public class WeatherActivity extends Activity implements View.OnClickListener {
                         break;
                     case "雷阵雨":
                         weather_pic3.setImageResource(R.drawable.tstorm_night);
+                        break;
+                    case "小雨":
+                        weather_pic3.setImageResource(R.drawable.light_rain);
+                        break;
                 }
                 daily_forecast_desp1.setText(desp_n);
                 daily_forecast_desp2.setText(desp_n2);
@@ -249,6 +263,9 @@ public class WeatherActivity extends Activity implements View.OnClickListener {
                     case "雷阵雨":
                         weather_pic1.setImageResource(R.drawable.tstorm);
                         break;
+                    case "小雨":
+                        weather_pic1.setImageResource(R.drawable.light_rain);
+                        break;
                 }
                 switch (desp_d2){
                     case "晴":
@@ -263,6 +280,9 @@ public class WeatherActivity extends Activity implements View.OnClickListener {
                     case "雷阵雨":
                         weather_pic2.setImageResource(R.drawable.tstorm);
                         break;
+                    case "小雨":
+                        weather_pic2.setImageResource(R.drawable.light_rain);
+                        break;
                 }
                 switch (desp_d3){
                     case "晴":
@@ -276,6 +296,9 @@ public class WeatherActivity extends Activity implements View.OnClickListener {
                         break;
                     case "雷阵雨":
                         weather_pic3.setImageResource(R.drawable.tstorm);
+                        break;
+                    case "小雨":
+                        weather_pic3.setImageResource(R.drawable.light_rain);
                         break;
                 }
                 daily_forecast_desp1.setText(desp_d);

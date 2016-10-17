@@ -8,7 +8,6 @@ import com.example.sunnyweather.db.SunnyWeatherDB;
 import com.example.sunnyweather.model.Bean;
 import com.example.sunnyweather.model.City;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONException;

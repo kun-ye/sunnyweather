@@ -4,9 +4,6 @@ import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
@@ -188,61 +185,13 @@ public class WeatherActivity extends Activity implements View.OnClickListener {
         if(strTimeFormat!=null && strTimeFormat.equals("24"))
         {
             int mHour=mCalendar.get(Calendar.HOUR)+12;
-            if(19<=mHour&&mHour<=24||0<=mHour&&mHour<=5){
+            if((19<=mHour&&mHour<=24)||(0<=mHour&&mHour<=5)){
                 String desp_n = preferences.getString("daily1_cond_n","");
                 String desp_n2 = preferences.getString("daily2_cond_n","");
                 String desp_n3 = preferences.getString("daily3_cond_n","");
-                switch (desp_n){
-                    case "晴":
-                        weather_pic1.setImageResource(R.drawable.sunny_night);
-                        break;
-                    case "多云":
-                        weather_pic1.setImageResource(R.drawable.cloudy_night);
-                        break;
-                    case "阵雨":
-                        weather_pic1.setImageResource(R.drawable.shower_night);
-                        break;
-                    case "雷阵雨":
-                        weather_pic1.setImageResource(R.drawable.tstorm_night);
-                        break;
-                    case "小雨":
-                        weather_pic1.setImageResource(R.drawable.light_rain);
-                        break;
-                }
-                switch (desp_n2){
-                    case "晴":
-                        weather_pic2.setImageResource(R.drawable.sunny_night);
-                        break;
-                    case "多云":
-                        weather_pic2.setImageResource(R.drawable.cloudy_night);
-                        break;
-                    case "阵雨":
-                        weather_pic2.setImageResource(R.drawable.shower_night);
-                        break;
-                    case "雷阵雨":
-                        weather_pic2.setImageResource(R.drawable.tstorm_night);
-                        break;
-                    case "小雨":
-                        weather_pic2.setImageResource(R.drawable.light_rain);
-                        break;
-                }
-                switch (desp_n3){
-                    case "晴":
-                        weather_pic3.setImageResource(R.drawable.sunny_night);
-                        break;
-                    case "多云":
-                        weather_pic3.setImageResource(R.drawable.cloudy_night);
-                        break;
-                    case "阵雨":
-                        weather_pic3.setImageResource(R.drawable.shower_night);
-                        break;
-                    case "雷阵雨":
-                        weather_pic3.setImageResource(R.drawable.tstorm_night);
-                        break;
-                    case "小雨":
-                        weather_pic3.setImageResource(R.drawable.light_rain);
-                        break;
-                }
+                weatherDespN(desp_n,weather_pic1);
+                weatherDespN(desp_n2,weather_pic2);
+                weatherDespN(desp_n3,weather_pic3);
                 daily_forecast_desp1.setText(desp_n);
                 daily_forecast_desp2.setText(desp_n2);
                 daily_forecast_desp3.setText(desp_n3);
@@ -250,57 +199,9 @@ public class WeatherActivity extends Activity implements View.OnClickListener {
                 String desp_d = preferences.getString("daily1_cond_d","");
                 String desp_d2 = preferences.getString("daily2_cond_d","");
                 String desp_d3 = preferences.getString("daily3_cond_d","");
-                switch (desp_d){
-                    case "晴":
-                        weather_pic1.setImageResource(R.drawable.sunny);
-                        break;
-                    case "多云":
-                        weather_pic1.setImageResource(R.drawable.cloudy);
-                        break;
-                    case "阵雨":
-                        weather_pic1.setImageResource(R.drawable.shower);
-                        break;
-                    case "雷阵雨":
-                        weather_pic1.setImageResource(R.drawable.tstorm);
-                        break;
-                    case "小雨":
-                        weather_pic1.setImageResource(R.drawable.light_rain);
-                        break;
-                }
-                switch (desp_d2){
-                    case "晴":
-                        weather_pic2.setImageResource(R.drawable.sunny);
-                        break;
-                    case "多云":
-                        weather_pic2.setImageResource(R.drawable.cloudy);
-                        break;
-                    case "阵雨":
-                        weather_pic2.setImageResource(R.drawable.shower);
-                        break;
-                    case "雷阵雨":
-                        weather_pic2.setImageResource(R.drawable.tstorm);
-                        break;
-                    case "小雨":
-                        weather_pic2.setImageResource(R.drawable.light_rain);
-                        break;
-                }
-                switch (desp_d3){
-                    case "晴":
-                        weather_pic3.setImageResource(R.drawable.sunny);
-                        break;
-                    case "多云":
-                        weather_pic3.setImageResource(R.drawable.cloudy);
-                        break;
-                    case "阵雨":
-                        weather_pic3.setImageResource(R.drawable.shower);
-                        break;
-                    case "雷阵雨":
-                        weather_pic3.setImageResource(R.drawable.tstorm);
-                        break;
-                    case "小雨":
-                        weather_pic3.setImageResource(R.drawable.light_rain);
-                        break;
-                }
+                weatherDespD(desp_d,weather_pic1);
+                weatherDespD(desp_d2,weather_pic2);
+                weatherDespD(desp_d3,weather_pic3);
                 daily_forecast_desp1.setText(desp_d);
                 daily_forecast_desp2.setText(desp_d2);
                 daily_forecast_desp3.setText(desp_d3);
@@ -344,6 +245,58 @@ public class WeatherActivity extends Activity implements View.OnClickListener {
                 }
                 break;
             default:
+                break;
+        }
+    }
+
+    private void weatherDespN(String desp ,ImageView weather_pic){
+        switch (desp){
+            case "晴":
+                weather_pic.setImageResource(R.drawable.sunny_night);
+                break;
+            case "多云":
+                weather_pic.setImageResource(R.drawable.cloudy_night);
+                break;
+            case "阵雨":
+                weather_pic.setImageResource(R.drawable.shower_night);
+                break;
+            case "雷阵雨":
+                weather_pic.setImageResource(R.drawable.tstorm_night);
+                break;
+            case "小雨":
+                weather_pic.setImageResource(R.drawable.light_rain);
+                break;
+            case "霾":
+                weather_pic.setImageResource(R.drawable.fog_night);
+                break;
+            case "阴":
+                weather_pic.setImageResource(R.drawable.overcast);
+                break;
+        }
+    }
+
+    private void weatherDespD(String desp,ImageView weather_pic){
+        switch (desp){
+            case "晴":
+                weather_pic.setImageResource(R.drawable.sunny);
+                break;
+            case "多云":
+                weather_pic.setImageResource(R.drawable.cloudy);
+                break;
+            case "阵雨":
+                weather_pic.setImageResource(R.drawable.shower);
+                break;
+            case "雷阵雨":
+                weather_pic.setImageResource(R.drawable.tstorm);
+                break;
+            case "小雨":
+                weather_pic.setImageResource(R.drawable.light_rain);
+                break;
+            case "霾":
+                weather_pic.setImageResource(R.drawable.fog);
+                break;
+            case "阴":
+                weather_pic.setImageResource(R.drawable.overcast);
                 break;
         }
     }

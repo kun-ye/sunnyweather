@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,7 +25,9 @@ import com.example.sunnyweather.util.Utility;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by admin on 2016/9/1.
@@ -36,6 +39,7 @@ public class ChooseAreaActivity extends Activity {
     private ArrayAdapter<String> adapter;
     private SunnyWeatherDB sunnyWeatherDB;
     private List<String> dataList = new ArrayList<String>();
+    private String cityCode;
     /**
      * 判断是否WeatherActivity中跳转
      */
@@ -49,6 +53,10 @@ public class ChooseAreaActivity extends Activity {
      */
     private City selectedCity;
 
+    /**
+     * AutoCompleteTextView
+     */
+    private AutoCompleteTextView autoCompleteTextView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +70,7 @@ public class ChooseAreaActivity extends Activity {
         }
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.choose_area);
+        autoCompleteTextView = (AutoCompleteTextView)findViewById(R.id.autoText);
         listView = (ListView) findViewById(R.id.list_view);
         titleText = (TextView) findViewById(R.id.title_text);
         adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,dataList);
@@ -71,14 +80,40 @@ public class ChooseAreaActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String cityId = cityList.get(position).getCityCode();
-                Intent intent = new Intent(ChooseAreaActivity.this,WeatherActivity.class);
-                intent.putExtra("city_code",cityId);
+                Intent intent = new Intent(ChooseAreaActivity.this, WeatherActivity.class);
+                intent.putExtra("city_code", cityId);
                 startActivity(intent);
                 finish();
             }
         });
         queryCities();//加载城市数据
+        ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(ChooseAreaActivity.this,android.R.layout.simple_dropdown_item_1line,dataList);
+        autoCompleteTextView.setThreshold(1);
+        autoCompleteTextView.setAdapter(adapter1);
+        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String str = parent.getItemAtPosition(position).toString();
+                Intent intent = new Intent(ChooseAreaActivity.this, WeatherActivity.class);
+                intent.putExtra("city_code", getCityCodeFromCityName(str));
+                startActivity(intent);
+                finish();
+            }
+        });
     }
+
+    private String getCityCodeFromCityName(String cityName){
+        cityList = sunnyWeatherDB.loadCites();
+        if (cityList.size() > 0) {
+            for (City city : cityList) {
+                if (city.getCityName().equals(cityName)) {
+                    cityCode = city.getCityCode();
+                }
+            }
+        }
+        return cityCode;
+    }
+
     private void queryCities(){
         cityList = sunnyWeatherDB.loadCites();
         if (cityList.size() > 0){

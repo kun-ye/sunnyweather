@@ -59,7 +59,7 @@ public class SunnyWeatherDB {
      */
     public List<City> loadCites(){
         List<City> list = new ArrayList<City>();
-        Cursor cursor = db.query("City",null,null,null,null,null,null);
+        Cursor cursor = db.query("City", null, null, null, null, null, null);
         if (cursor.moveToFirst()){
             do {
                 City city = new City();
@@ -77,4 +77,15 @@ public class SunnyWeatherDB {
         }
         return list;
     }
+    /**
+     * 根据城市名查询城市编码
+     */
+    public String selectCityCode(String cityName){
+        Cursor cursor = db.rawQuery("select city_code from City where = ?", new String[]{cityName});
+        if (cursor != null){
+            cursor.close();
+        }
+        return cursor.toString();
+    }
+
 }

@@ -57,6 +57,7 @@ public class ChooseAreaActivity extends Activity {
      * AutoCompleteTextView
      */
     private AutoCompleteTextView autoCompleteTextView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +74,8 @@ public class ChooseAreaActivity extends Activity {
         autoCompleteTextView = (AutoCompleteTextView)findViewById(R.id.autoText);
         listView = (ListView) findViewById(R.id.list_view);
         titleText = (TextView) findViewById(R.id.title_text);
+        View v0 = findViewById(R.id.text_select_city);
+        v0.getBackground().setAlpha(120);
         adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,dataList);
         listView.setAdapter(adapter);
         sunnyWeatherDB = SunnyWeatherDB.getInstance(this);

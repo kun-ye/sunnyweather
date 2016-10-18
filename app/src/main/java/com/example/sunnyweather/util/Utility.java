@@ -71,6 +71,16 @@ public class Utility {
         String nowWind = basicBean.getHeWeather_data_service().get(0).getNow().getWind().getDir()+basicBean.getHeWeather_data_service().get(0).getNow().getWind().getSc();
         String nowCond = "湿度"+nowHum+"%"+" "+nowWind+"级";
         /**
+         *生活指数
+         */
+        String comf = basicBean.getHeWeather_data_service().get(0).getSuggestion().getComf().getTxt();
+        String cw = basicBean.getHeWeather_data_service().get(0).getSuggestion().getCw().getTxt();
+        String drsg = basicBean.getHeWeather_data_service().get(0).getSuggestion().getDrsg().getTxt();
+        String flu = basicBean.getHeWeather_data_service().get(0).getSuggestion().getFlu().getTxt();
+        String sport = basicBean.getHeWeather_data_service().get(0).getSuggestion().getSport().getTxt();
+        String trav = basicBean.getHeWeather_data_service().get(0).getSuggestion().getTrav().getTxt();
+        String uv = basicBean.getHeWeather_data_service().get(0).getSuggestion().getUv().getTxt();
+        /**
          * 三天天气
          */
         //白天天气状况
@@ -88,12 +98,12 @@ public class Utility {
         String daily2_temp_min = basicBean.getHeWeather_data_service().get(0).getDaily_forecast().get(1).getTmp().getMin();
         String daily3_temp_max = basicBean.getHeWeather_data_service().get(0).getDaily_forecast().get(2).getTmp().getMax();
         String daily3_temp_min = basicBean.getHeWeather_data_service().get(0).getDaily_forecast().get(2).getTmp().getMin();
-        saveWeatherInfo(context,cityName,cityId,temp,weatherDesp,publishTime,nowCond,daily1_cond_d,daily1_cond_n,daily1_temp_max,daily1_temp_min,daily2_cond_d,daily2_cond_n,daily2_temp_max,daily2_temp_min,daily3_cond_d,daily3_cond_n,daily3_temp_max,daily3_temp_min);
+        saveWeatherInfo(context,cityName,cityId,temp,weatherDesp,publishTime,nowCond,daily1_cond_d,daily1_cond_n,daily1_temp_max,daily1_temp_min,daily2_cond_d,daily2_cond_n,daily2_temp_max,daily2_temp_min,daily3_cond_d,daily3_cond_n,daily3_temp_max,daily3_temp_min,comf,cw,drsg,flu,sport,trav,uv);
     }
     /**
      * 将服务器返回的所有天气信息存储到SharedPreFerences文件中
      */
-    public static void saveWeatherInfo(Context context,String cityName,String cityId,String temp,String weatherDesp,String publishTime,String nowCond,String daily1_cond_d,String daily1_cond_n,String daily1_temp_max,String daily1_temp_min,String daily2_cond_d,String daily2_cond_n,String daily2_temp_max,String daily2_temp_min,String daily3_cond_d,String daily3_cond_n,String daily3_temp_max,String daily3_temp_min){
+    public static void saveWeatherInfo(Context context,String cityName,String cityId,String temp,String weatherDesp,String publishTime,String nowCond,String daily1_cond_d,String daily1_cond_n,String daily1_temp_max,String daily1_temp_min,String daily2_cond_d,String daily2_cond_n,String daily2_temp_max,String daily2_temp_min,String daily3_cond_d,String daily3_cond_n,String daily3_temp_max,String daily3_temp_min,String comf,String cw,String drsg,String flu,String sport,String trav,String uv){
         SimpleDateFormat sdf = new SimpleDateFormat("M/d", Locale.CHINA);
         final Calendar c = Calendar.getInstance();
         String mWay = String.valueOf(c.get(Calendar.DAY_OF_WEEK));
@@ -133,6 +143,13 @@ public class Utility {
         editor.putString("daily3_cond_n",daily3_cond_n);
         editor.putString("daily3_temp_max",daily3_temp_max);
         editor.putString("daily3_temp_min",daily3_temp_min);
+        editor.putString("comf",comf);
+        editor.putString("cw",cw);
+        editor.putString("drsg",drsg);
+        editor.putString("flu",flu);
+        editor.putString("sport",sport);
+        editor.putString("trav",trav);
+        editor.putString("uv",uv);
         editor.commit();
     }
 }

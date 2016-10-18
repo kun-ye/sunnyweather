@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">来秋天气</string>
+    <string-array name="life">
+        <item>舒适度指数</item>
+        <item>洗车指数</item>
+        <item>穿衣指数</item>
+        <item>感冒指数</item>
+        <item>运动指数</item>
+        <item>旅游指数</item>
+        <item>紫外线指数</item>
+    </string-array>
 </resources>

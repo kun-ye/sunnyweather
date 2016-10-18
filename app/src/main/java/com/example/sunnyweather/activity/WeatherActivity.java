@@ -4,15 +4,24 @@ import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
+import android.widget.PopupWindow;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.sunnyweather.R;
 import com.example.sunnyweather.service.AutoUpdateService;
@@ -83,6 +92,12 @@ public class WeatherActivity extends Activity implements View.OnClickListener {
     private TextView min3;
     private TextView daily_forecast_desp3;
 
+    /**
+     *Spinner
+     */
+    private Spinner spinner;
+    private TextView runLight;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,6 +111,8 @@ public class WeatherActivity extends Activity implements View.OnClickListener {
         v2.getBackground().setAlpha(100);
         View v3 = findViewById(R.id.third_day_l);
         v3.getBackground().setAlpha(80);
+        View v4 = findViewById(R.id.spinner);
+        v4.getBackground().setAlpha(60);
         //初始化各种控件
         weatherInfoLayout = (LinearLayout) findViewById(R.id.weather_info_layout);
         cityNameText = (TextView) findViewById(R.id.city_name);
@@ -118,6 +135,51 @@ public class WeatherActivity extends Activity implements View.OnClickListener {
         max3 = (TextView) findViewById(R.id.max3);
         min3 = (TextView) findViewById(R.id.min3);
         daily_forecast_desp3 = (TextView) findViewById(R.id.daily_forecast_desp3);
+        runLight = (TextView) findViewById(R.id.runLight);
+        spinner = (Spinner) findViewById(R.id.spinner);
+        //加载需要准备的数据源
+        final String[] life = getResources().getStringArray(R.array.life);
+        //将数据源加载到适配器中
+        ArrayAdapter<String> liftAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,life);
+        //将适配器的数据加载到控件中
+        spinner.setAdapter(liftAdapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                SharedPreferences pf = PreferenceManager.getDefaultSharedPreferences(WeatherActivity.this);
+                TextView textView = (TextView)view;
+                textView.setTextColor(Color.WHITE);
+                textView.setTextSize(10);
+                switch (life[position]){
+                    case "舒适度指数":
+                        runLight.setText(pf.getString("comf",""));
+                        break;
+                    case "洗车指数":
+                        runLight.setText(pf.getString("cw",""));
+                        break;
+                    case "穿衣指数":
+                        runLight.setText(pf.getString("drsg",""));
+                        break;
+                    case "感冒指数":
+                        runLight.setText(pf.getString("flu",""));
+                        break;
+                    case "运动指数":
+                        runLight.setText(pf.getString("sport",""));
+                        break;
+                    case "旅游指数":
+                        runLight.setText(pf.getString("trav",""));
+                        break;
+                    case "紫外线指数":
+                        runLight.setText(pf.getString("uv",""));
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         switchCity.setOnClickListener(this);
         refreshWeather.setOnClickListener(this);
         String cityId = getIntent().getStringExtra("city_code");
@@ -266,6 +328,9 @@ public class WeatherActivity extends Activity implements View.OnClickListener {
             case "小雨":
                 weather_pic.setImageResource(R.drawable.light_rain);
                 break;
+            case "中雨":
+                weather_pic.setImageResource(R.drawable.shower3);
+                break;
             case "霾":
                 weather_pic.setImageResource(R.drawable.fog_night);
                 break;
@@ -291,6 +356,9 @@ public class WeatherActivity extends Activity implements View.OnClickListener {
                 break;
             case "小雨":
                 weather_pic.setImageResource(R.drawable.light_rain);
+                break;
+            case "中雨":
+                weather_pic.setImageResource(R.drawable.shower3);
                 break;
             case "霾":
                 weather_pic.setImageResource(R.drawable.fog);

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="查询城市"
+        android:id="@+id/select_popupmenu"></item>
+    <item android:title="生活指南"
+        android:id="@+id/life_popupmenu"></item>
+</menu>
